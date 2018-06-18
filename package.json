@@ -1,0 +1,23 @@
+{
+  "name": "vorge-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyclonic-games/vorge-server.git"
+  },
+  "author": "X",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cyclonic-games/vorge-server/issues"
+  },
+  "homepage": "https://github.com/cyclonic-games/vorge-server#readme",
+  "dependencies": {
+    "uws": "^10.148.0",
+    "vorge": "github:cyclonic-games/vorge"
+  }
+}
