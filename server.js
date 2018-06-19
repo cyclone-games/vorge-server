@@ -1,4 +1,4 @@
-const Server = require('./main/Server');
+const Server = require('./core/Server');
 
 const server = new Server('Title Here', [ ]);
 
