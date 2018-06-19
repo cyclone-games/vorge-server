@@ -18,7 +18,7 @@ module.exports = class Server extends Event.Emitter {
             this[ module ] = new Server[ module ](module, this);
         }
 
-        const exclude = [ 'kind', 'plugins', 'observables' ];
+        const exclude = [ 'kind', 'plugins', 'observables', 'server' ];
         const modules = Object.keys(this).filter(key => !exclude.includes(key));
 
         for (const module of modules.map(module => this[ module ])) {

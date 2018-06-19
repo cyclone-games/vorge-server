@@ -13,11 +13,12 @@ module.exports = class Connection extends Module {
     }
 
     establish (socket) {
-        socket.onmessage = event => this.emit('message', [ JSON.parse(event.data) ]);
+        console.log('PLAYER CONNECTED')
+        socket.on('message', message => this.emit('message', [ JSON.parse(message) ]));
         this.sockets.push(socket);
     }
 
-    send (task) {
-        this.sockets.forEach(socket => socket.send(JSON.stringify(task)));
+    send (tasks) {
+        this.sockets.forEach(socket => socket.send(JSON.stringify(tasks)));
     }
 }
