@@ -14,15 +14,15 @@ module.exports = class Server extends Event.Emitter {
 
         this.plugins = plugins;
 
-        for (const module of Object.keys(Server)) {
-            this[ module ] = new Server[ module ](module, this);
+        for (const mod of Object.keys(module.exports)) {
+            this[ mod ] = new module.exports[ mod ](mod, this);
         }
 
         const exclude = [ 'kind', 'plugins', 'observables', 'server' ];
         const modules = Object.keys(this).filter(key => !exclude.includes(key));
 
-        for (const module of modules.map(module => this[ module ])) {
-            module.connect(this);
+        for (const mod of modules.map(mod => this[ mod ])) {
+            mod.connect(this);
         }
 
         this.refresh();
