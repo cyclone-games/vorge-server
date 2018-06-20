@@ -24,7 +24,7 @@ module.exports = new Specification('Connection', test => {
         test.expect(connection.sockets.includes(socket));
     });
     
-    test.case('connection should allow sending messages as JSON to sockets', () => {
+    test.case('should allow sending messages as JSON to connections', () => {
         const socket = new Spy();
         const tasks = [ { name: 'foo' } ];
         
