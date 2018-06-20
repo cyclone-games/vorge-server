@@ -11,25 +11,25 @@ module.exports = new Specification('Connection', test => {
     
     connection.connect(server);
     
-    test.case('connections should exist as an array on this.sockets', expect => {
-        expect(Array.isArray(connection.sockets));
+    test.case('connections should exist as an array on this.sockets', () => {
+        test.expect(Array.isArray(connection.sockets));
     });
     
-    test.case('upon connection, should save socket via this.establish', expect => {
+    test.case('upon connection, should save socket via this.establish', () => {
         const socket = new Spy();
         
         server.emit('connection', [ socket ]);
         
-        expect(Spy.called(socket.on));
-        expect(connection.sockets.includes(socket));
+        test.expect(Spy.called(socket.on));
+        test.expect(connection.sockets.includes(socket));
     });
     
-    test.case('connection should allow sending messages as JSON to sockets', expect => {
+    test.case('connection should allow sending messages as JSON to sockets', () => {
         const socket = new Spy();
         
         connection.sockets = [ socket ];
         connection.send([ { name: 'foo' } ]);
         
-        expect(Spy.called(socket.send));
+        test.expect(Spy.called(socket.send));
     });
 });
