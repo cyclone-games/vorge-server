@@ -1,11 +1,12 @@
-const { Server: WebSocketServer } = require('uws');
+const http = require('http');
+const uws = require('uws');
 
 const Event = require('vorge/core/Event');
-
 const Settings = require('vorge/modules/Settings');
 const TaskManager = require('vorge/modules/TaskManager');
 
 const Connection = require('../modules/Connection');
+const Router = require('../modules/Router');
 
 module.exports = class Server extends Event.Emitter {
 
@@ -18,7 +19,7 @@ module.exports = class Server extends Event.Emitter {
             this[ mod ] = new module.exports[ mod ](mod, this);
         }
 
-        const exclude = [ 'kind', 'plugins', 'observables', 'server' ];
+        const exclude = [ 'kind', 'plugins', 'observables', 'httpServer', 'uwsServer' ];
         const modules = Object.keys(this).filter(key => !exclude.includes(key));
 
         for (const mod of modules.map(mod => this[ mod ])) {
@@ -35,8 +36,9 @@ module.exports = class Server extends Event.Emitter {
     }
 
     listen (port) {
-        this.server = new WebSocketServer({ port });
-        this.server.on('connection', socket => {
+        this.httpServer = http.createServer((...args) => this.emit('request', args));
+        this.uwsServer = new uws.Server({ port, server: this.httpServer });
+        this.uwsServer.on('connection', socket => {
             this.emit('connection', [ socket ]);
         });
     }
@@ -47,5 +49,6 @@ module.exports = class Server extends Event.Emitter {
 };
 
 module.exports.connection = Connection;
+module.exports.router = Router;
 module.exports.settings = Settings;
 module.exports.tasks = TaskManager;
