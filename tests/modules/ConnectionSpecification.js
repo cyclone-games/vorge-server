@@ -1,5 +1,6 @@
 const Mock = require('fenrir/core/Mock');
 const Specification = require('fenrir/core/Specification');
+const Spy = require('fenrir/core/Spy');
 
 const Connection = require('../../modules/Connection');
 const Server = require('../../core/Server');
@@ -15,20 +16,20 @@ module.exports = new Specification('Connection', test => {
     });
     
     test.case('upon connection, should save socket via this.establish').run(expect => {
-        const socket = test.spy();
+        const socket = new Spy();
         
         server.emit('connection', [ socket ]);
         
-        expect(test.spy.called(socket.on));
+        expect(Spy.called(socket.on));
         expect(connection.sockets.includes(socket));
     });
     
     test.case('connection should allow sending messages as JSON to sockets').run(expect => {
-        const socket = test.spy();
+        const socket = new Spy();
         
         connection.sockets = [ socket ];
         connection.send([ { name: 'foo' } ]);
         
-        expect(test.spy.called(socket.send));
+        expect(Spy.called(socket.send));
     });
 });
