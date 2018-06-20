@@ -21,7 +21,7 @@ module.exports = new Specification('Connection', test => {
         
         server.emit('connection', [ socketSpy ]);
         
-        test.espect(test.called(connectionSpy.establish).with(socketSpy));
+        test.expect(test.called(connectionSpy.establish).with(socketSpy));
         test.expect(test.called(socketSpy.on));
         test.expect(connection.sockets.includes(socketSpy));
     });
