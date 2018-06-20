@@ -20,7 +20,7 @@ module.exports = new Specification('Connection', test => {
         
         server.emit('connection', [ socket ]);
         
-        test.expect(Spy.called(socket.on));
+        test.expect(test.called(socket.on));
         test.expect(connection.sockets.includes(socket));
     });
     
@@ -30,6 +30,6 @@ module.exports = new Specification('Connection', test => {
         connection.sockets = [ socket ];
         connection.send([ { name: 'foo' } ]);
         
-        test.expect(Spy.called(socket.send));
+        test.expect(test.called(socket.send));
     });
 });
