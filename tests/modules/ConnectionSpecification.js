@@ -1,10 +1,11 @@
+const Mock = require('fenrir/core/Mock');
 const Specification = require('fenrir/core/Specification');
 
 const Connection = require('../../modules/Connection');
 const Server = require('../../core/Server');
 
 module.exports = new Specification('Connection', test => {
-    const server = test.mock(Server);
+    const server = new Mock(Server);
     const connection = new Connection();
     
     connection.connect(server);
