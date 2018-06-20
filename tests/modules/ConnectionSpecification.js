@@ -7,7 +7,7 @@ const Server = require('../../core/Server');
 
 module.exports = new Specification('Connection', test => {
     const server = new Mock(Server);
-    const connection = new Connection();
+    const connection = new Connection('connection', server);
     
     connection.connect(server);
     
