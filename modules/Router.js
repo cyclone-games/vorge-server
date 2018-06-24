@@ -8,10 +8,6 @@ const jRouter = require('juncture/Router');
 
 const util = {
 
-    stream (status, stream) {
-
-    },
-
     file (status, file) {
         const type = fileType(file);
         const mime = type ? type.mime : 'text/plain';
@@ -46,8 +42,8 @@ module.exports = class Router extends Module {
         return util;
     }
 
-    constructor (name, game) {
-        super(name, game);
+    constructor (name, server) {
+        super(name, server);
 
         this.juncture = new jRouter();
         this.sockets = [ ];

@@ -14,8 +14,8 @@ module.exports = class SessionManager extends Module {
 
     }
 
-    save (origin, id) {
-        return this.cache.set(origin, id);
+    save (origin, account) {
+        return this.cache.set(origin, account);
     }
 
     remember (origin) {
