@@ -1,14 +1,8 @@
 const Server = require('./core/Server');
 
-const server = new Server('Title Here', [ ]);
+const common = require('./plugins/common');
+const postgres = require('./plugins/postgres');
 
-server.subscribe('connection').forEach(method => {
-    server.connection.send([ { "name": "ping", "details": { } } ]);
-});
-
-server.tasks.subscribe('ping').forEach(method => {
-    const [ details ] = method.arguments;
-    console.log(`[ task: ping ] [ ${ Date.now() } ] ${ details }`);
-});
+const server = new Server('Title Here', [ common, postgres ]);
 
 server.listen(6969);

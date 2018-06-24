@@ -1,5 +1,5 @@
 {
-  "name": "vorge-server",
+  "name": "orion",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cyclonic-games/vorge-server.git"
+    "url": "git+https://github.com/cyclonic-games/orion.git"
   },
-  "author": "X",
+  "author": "Cyclonic Games",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cyclonic-games/vorge-server/issues"
+    "url": "https://github.com/cyclonic-games/orion/issues"
   },
-  "homepage": "https://github.com/cyclonic-games/vorge-server#readme",
+  "homepage": "https://github.com/cyclonic-games/orion#readme",
   "dependencies": {
+    "file-type": "^8.0.0",
+    "juncture": "github:cyclonic-games/juncture",
+    "pg": "^7.4.3",
+    "uuid": "^3.2.1",
     "uws": "^10.148.0",
     "vorge": "github:cyclonic-games/vorge"
   }
