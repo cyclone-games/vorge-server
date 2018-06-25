@@ -12,13 +12,12 @@ module.exports = class Connection extends Module {
 
     connect (server) {
         server.subscribe('connection').forEach(method => this.establish(...method.arguments));
-        server.tasks.subscribe('handshake').forEach(method => this.handshake(...method.arguments));
     }
 
     establish (socket) {
-        const origin = uuidv4();
+        const id = uuidv4();
 
-        this.sockets.set(origin, socket);
+        this.sockets.set(id, socket);
 
         socket.on('message', message => this.emit('message', [ JSON.parse(message) ]));
         socket.on('close', () => {
@@ -29,14 +28,14 @@ module.exports = class Connection extends Module {
             }
         });
 
-        this.send(origin, { name: 'handshake', details: { id: origin } });
+        this.handshake(id);
     }
 
-    handshake (task) {
-        this.server.logger.info(`New connection from ${ this.sockets.get(task.id)._socket.remoteAddress }`);
+    handshake (id) {
+        this.server.tasks.create('handshake', [ id ], id);
     }
 
-    send (message) {
+    send (message, origin) {
         this.sockets.get(origin).send(JSON.stringify(message));
     }
 
