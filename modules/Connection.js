@@ -36,13 +36,13 @@ module.exports = class Connection extends Module {
         this.server.logger.info(`New connection from ${ this.sockets.get(task.id)._socket.remoteAddress }`);
     }
 
-    send (origin, task) {
-        this.sockets.get(origin).send(JSON.stringify({ origin, task }));
+    send (message) {
+        this.sockets.get(origin).send(JSON.stringify(message));
     }
 
-    broadcast (task) {
+    broadcast (message) {
         for (const [ origin, socket ] of this.sockets) {
-            socket.send(JSON.stringify({ origin, task }));
+            socket.send(JSON.stringify(message));
         }
     }
 }
