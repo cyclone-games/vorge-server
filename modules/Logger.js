@@ -1,9 +1,9 @@
-const Module = require('vorge/core/Module');
+const Module = require('../core/Module');
 
 module.exports = class Logger extends Module {
 
-    constructor (name, game) {
-        super(name, game);
+    constructor (name, server) {
+        super(name, server);
     }
 
     connect (server) {
@@ -11,18 +11,18 @@ module.exports = class Logger extends Module {
     }
 
     error (message) {
-        console.error(module.exports.pattern('error', message));
+        process.stderr.write(module.exports.pattern('error', message));
     }
 
     warn (message) {
-        console.warn(module.exports.pattern('warn', message));
+        process.stdout.write(module.exports.pattern('warn', message));
     }
 
     info (message) {
-        console.info(module.exports.pattern('info', message));
+        process.stdout.write(module.exports.pattern('info', message));
     }
 };
 
 module.exports.pattern = function pattern (type, message) {
-    return `[ ${ Date.now() } ] [ ${ type.toUpperCase() } ] ${ message }`;
+    return `[ ${ Date.now() } ] [ ${ type.toLowerCase() } ] ${ message }\n`;
 };

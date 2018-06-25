@@ -1,13 +1,13 @@
 const util = require('util');
 
-const Module = require('vorge/core/Module');
+const Module = require('../core/Module');
 
 module.exports = class Database extends Module {
 
-    constructor (name, game) {
-        super(name, game);
+    constructor (name, server) {
+        super(name, server);
 
-        this.client = null;
+        this.pool = null;
         this.functions = new Map();
     }
 
@@ -16,8 +16,8 @@ module.exports = class Database extends Module {
             const [ key, value ] = method.arguments;
 
             switch (true) {
-                case key.endsWith('client'): {
-                    this.client = value;
+                case key.endsWith('pool'): {
+                    this.pool = value;
                 }
             }
         });
@@ -28,9 +28,11 @@ module.exports = class Database extends Module {
     }
 
     execute (name, parameters) {
-        return this.functions.get(name)(this.client, parameters).then(result => {
-            this.client.release();
-            return result;
+        return this.pool.connect().then(client => {
+            return this.functions.get(name)(client, parameters).then(result => {
+                client.release();
+                return result;
+            });
         });
     }
 };

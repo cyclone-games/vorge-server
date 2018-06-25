@@ -1,11 +1,11 @@
 const uuidv4 = require('uuid/v4');
 
-const Module = require('vorge/core/Module');
+const Module = require('../core/Module');
 
 module.exports = class Connection extends Module {
 
-    constructor (name, game) {
-        super(name, game);
+    constructor (name, server) {
+        super(name, server);
 
         this.sockets = new Map();
     }
@@ -18,18 +18,22 @@ module.exports = class Connection extends Module {
     establish (socket) {
         const origin = uuidv4();
 
-        socket.on('message', message => this.emit('message', [ JSON.parse(message) ]));
         this.sockets.set(origin, socket);
+
+        socket.on('message', message => this.emit('message', [ JSON.parse(message) ]));
+        socket.on('close', () => {
+            for (const [ id, connection ] of this.sockets) if (socket === connection) {
+                this.sockets.delete(id);
+                this.emit('close', [ id ]);
+                break;
+            }
+        });
 
         this.send(origin, { name: 'handshake', details: { id: origin } });
     }
 
     handshake (task) {
-        this.game.logger.info(`New connection from ${ this.sockets.get(task.id)._socket.remoteAddress }`);
-    }
-
-    disconnect () {
-
+        this.server.logger.info(`New connection from ${ this.sockets.get(task.id)._socket.remoteAddress }`);
     }
 
     send (origin, task) {

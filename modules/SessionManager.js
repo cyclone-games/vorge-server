@@ -1,17 +1,17 @@
 const uuidv4 = require('uuid/v4');
 
-const Module = require('vorge/core/Module');
+const Module = require('../core/Module');
 
 module.exports = class SessionManager extends Module {
 
-    constructor (name, game) {
-        super(name, game);
+    constructor (name, server) {
+        super(name, server);
 
         this.cache = new Map();
     }
 
     connect (server) {
-
+        server.connection.subscribe('disconnect').forEach(method => this.forget(...arguments));
     }
 
     save (origin, account) {

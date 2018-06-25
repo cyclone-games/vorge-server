@@ -7,7 +7,7 @@ const authenticate = require('./functions/authenticate');
 const createAccount = require('./functions/createAccount');
 
 module.exports = new Plugin('postgres', server => {
-server.database.register('authenticate', authenticate);
+    server.database.register('authenticate', authenticate);
     server.database.register('createAccount', createAccount);
 
     server.settings.set('database.pool', new Pool({
@@ -16,11 +16,4 @@ server.database.register('authenticate', authenticate);
         user: 'admin',
         password: '1234'
     }));
-
-    server.settings.get('database.pool').connect().then(client => {
-        server.settings.set('database.client', client);
-    })
-    .catch(error => {
-        console.error(error);
-    });
 });

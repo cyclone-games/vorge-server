@@ -9,7 +9,7 @@ module.exports = function authenticate (origin, [ username, password ]) {
 
         this.sessions.save(origin, account);
         this.connection.send(origin, { name: 'authorize', details: permissions });
-        this.logger.info(`${ username } (${ id }) has joined the server`);
+        this.logger.info(`${ username } has joined the server`);
     })
     .catch(error => {
         console.log(error);

@@ -1,9 +1,9 @@
-const Module = require('vorge/core/Module');
+const Module = require('../core/Module');
 
 module.exports = class FileSystem extends Module {
 
-    constructor (name, game) {
-        super(name, game);
+    constructor (name, server) {
+        super(name, server);
     }
 
     connect (server) {

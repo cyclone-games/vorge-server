@@ -2,9 +2,9 @@ const http = require('http');
 const url = require('url');
 
 const fileType = require('file-type');
-
-const Module = require('vorge/core/Module');
 const jRouter = require('juncture/Router');
+
+const Module = require('../core/Module');
 
 const util = {
 
@@ -31,7 +31,7 @@ const util = {
         return {
             code: code,
             meta: { 'content-type': 'application/json' },
-            message: JSON.stringify({ error: `${ code }: ${ message }` })
+            message: JSON.stringify({ error: `${ code.toString().toLowerCase() } ${ message }` })
         };
     }
 };
@@ -64,14 +64,33 @@ module.exports = class Router extends Module {
     }
 
     async handle (request, response) {
+        const method = request.method.toLowerCase();
         const { pathname } = url.parse(request.url);
         const route = this.juncture.find(request.method, pathname);
 
-        if (route) try {
+        response.setHeader('access-control-allow-origin', '*');
+        response.setHeader('access-control-allow-headers', 'content-type, authorization, *');
+        response.setHeader('access-control-allow-methods', 'get, post, put, delete, *');
+
+        if (method === 'options') {
+            response.end();
+        }
+        else if (!route) {
+            const error = util.error(404, 'Not Found');
+
+            response.writeHead(error.code, error.meta);
+            response.end(error.message);
+
+            this.server.logger.error(JSON.parse(error.message).error);
+        }
+
+        if (!response.finished) try {
             const result = await route.action.call(this, request, route.params);
 
             response.writeHead(result.status, result.headers);
             response.end(result.body);
+
+            this.server.logger.info(`${ method } ${ pathname }`);
         }
         catch (error) {
             const code = Number.parseInt(error.code) || 500;
@@ -79,15 +98,7 @@ module.exports = class Router extends Module {
             response.writeHead(code, error.meta);
             response.end(error.message);
 
-            this.game.logger.error(JSON.parse(error.message).error);
-        }
-        else {
-            const error = util.error(404, 'Not Found');
-
-            response.writeHead(error.code, error.meta);
-            response.end(error.message);
-
-            this.game.logger.error(JSON.parse(error.message).error);
+            this.server.logger.error(JSON.parse(error.message).error);
         }
     }
 };
