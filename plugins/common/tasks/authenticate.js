@@ -8,7 +8,7 @@ module.exports = function authenticate (origin, [ username, password ]) {
         const { id, username, ...permissions } = account;
 
         this.sessions.save(origin, account);
-        this.connection.send(origin, { name: 'authorize', details: permissions });
+        this.tasks.create('authorize', permissions, origin);
         this.logger.info(`${ username } has joined the server`);
     })
     .catch(error => {
