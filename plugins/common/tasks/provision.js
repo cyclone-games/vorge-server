@@ -1,6 +1,6 @@
 const Entity = require('vorge/core/Entity');
 
-module.exports = function handshake (origin) {
+module.exports = function provision (origin) {
     const std = this.libraries.use('std');
 
     const player = std.entities.player.create({
