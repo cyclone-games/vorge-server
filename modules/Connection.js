@@ -32,7 +32,7 @@ module.exports = class Connection extends Module {
     }
 
     handshake (id) {
-        this.server.tasks.create('handshake', [ id ], id);
+        this.server.tasks.create('handshake', id, id);
     }
 
     send (message, origin) {

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/cyclonic-games/orion#readme",
   "dependencies": {
+    "encosy": "github:cyclonic-games/encosy",
     "file-type": "^8.0.0",
     "juncture": "github:cyclonic-games/juncture",
     "pg": "^7.4.3",

@@ -1,6 +1,6 @@
 const utilities = require('../utilities');
 
-module.exports = function authenticate (origin, [ username, password ]) {
+module.exports = function authenticate ([ username, password ], origin) {
     const encrypted = utilities.encrypt(password);
 
     this.database.execute('authenticate', [ username, encrypted ]).then(result => {

@@ -3,6 +3,7 @@ const uws = require('uws');
 
 const Event = require('vorge/core/Event');
 
+const Initializer = require('vorge/modules/Initializer');
 const LibraryManager = require('vorge/modules/LibraryManager');
 const Settings = require('vorge/modules/Settings');
 const TaskManager = require('vorge/modules/TaskManager');
@@ -43,10 +44,12 @@ module.exports = class Server extends Event.Emitter {
 
     listen (port) {
         this.http = http.createServer((...args) => this.emit('request', args));
+
         this.uws = new uws.Server({ port, server: this.http });
         this.uws.on('connection', socket => {
             this.emit('connection', [ socket ]);
         });
+
         this.emit('listen', [ port ]);
     }
 
@@ -58,6 +61,7 @@ module.exports = class Server extends Event.Emitter {
 module.exports.connection = Connection;
 module.exports.database = Database;
 module.exports.files = FileSystem;
+module.exports.initializer = Initializer;
 module.exports.libraries = LibraryManager;
 module.exports.logger = Logger;
 module.exports.router = Router;
