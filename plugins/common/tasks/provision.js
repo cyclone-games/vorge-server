@@ -12,8 +12,8 @@ module.exports = function provision (origin) {
         id: origin,
         name: 'admin',
         position: {
-            x: 0,
-            y: 0,
+            x: Math.floor(Math.random() * 1024),
+            y: Math.floor(Math.random() * 576),
             z: 0
         },
         size: {
@@ -21,15 +21,13 @@ module.exports = function provision (origin) {
             height: 32,
         },
         texture: {
-            data: null,
-            fill: false,
-            clip: null
+            data: null
         }
     });
 
     this.tasks.create('initialize', { type: 'entity', spec: std.entities.player.assemble(player) }, origin);
-    this.tasks.create('initialize', { type: 'script', spec: { name: 'test', code: 'console.log(target, game);' } }, origin);
+
     setTimeout(() => {
-        this.tasks.create('runScript', { target: player, name: 'test' }, origin);
+        this.tasks.create('spawn', player.valueOf(), origin);
     }, 100);
 };
