@@ -39,8 +39,8 @@ module.exports = class Connection extends Module {
         this.sockets.get(origin).send(JSON.stringify(message));
     }
 
-    broadcast (message) {
-        for (const [ origin, socket ] of this.sockets) {
+    broadcast (message, except) {
+        for (const [ origin, socket ] of this.sockets) if (!except || origin !== except) {
             socket.send(JSON.stringify(message));
         }
     }
