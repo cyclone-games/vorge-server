@@ -1,9 +1,9 @@
 const Entity = require('vorge/core/Entity');
 
-module.exports = function provision (origin) {
+module.exports = function provision (id) {
     const std = this.libraries.use('std');
 
-    this.initializer.spawn({
+    const player = this.initializer.spawn(id, {
         id: this.initializer.heap.entities.size,
         kind: std.entities.player.kind,
         components: {
@@ -12,7 +12,7 @@ module.exports = function provision (origin) {
                 now: 100,
                 max: 100
             },
-            id: origin,
+            id: this.initializer.heap.entities.size,
             name: 'admin',
             position: {
                 x: Math.floor(Math.random() * 1024),
@@ -21,7 +21,7 @@ module.exports = function provision (origin) {
             },
             size: {
                 width: 32,
-                height: 32,
+                height: 64,
             },
             texture: {
                 data: null
@@ -29,11 +29,9 @@ module.exports = function provision (origin) {
         }
     });
 
-    const player = this.initializer.heap.entities.get(this.initializer.heap.entities.size - 1);
-
-    this.connection.broadcast({ task: { name: 'initialize', details: { type: 'entity', spec: std.entities.player.assemble(player) } }, origin });
+    this.connection.broadcast({ task: { name: 'initialize', details: { type: 'entity', spec: std.entities.player.assemble(player) } }, id });
 
     setTimeout(() => {
-        this.connection.broadcast({ task: { name: 'spawn', details: player.valueOf() }, origin }, origin);
+        this.connection.broadcast({ task: { name: 'spawn', details: player.valueOf() }, id });
     }, 1000 / 60);
 };

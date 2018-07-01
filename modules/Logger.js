@@ -21,6 +21,10 @@ module.exports = class Logger extends Module {
     info (message) {
         process.stdout.write(module.exports.pattern('info', message));
     }
+
+    meta (message) {
+        process.stdout.write(module.exports.pattern('meta', message));
+    }
 };
 
 module.exports.pattern = function pattern (type, message) {

@@ -1,15 +1,15 @@
 const utilities = require('../utilities');
 
-module.exports = function register ([ username, password ], origin) {
+module.exports = function register ([ username, password ], id) {
     const encrypted = utilities.encrypt(password);
 
     this.database.execute('register', [ username, encrypted ]).then(() => {
         return this.database.execute('authenticate', [ username, encrypted ]).then(result => {
             const [ account ] = result.rows;
-            const { id, username, ...permissions } = account;
+            const { username, ...permissions } = account;
 
             this.sessions.save(origin, account);
-            this.tasks.create('authorize', permissions, origin);
+            this.connection.send(id, { task: { name: 'authorize', details: permissions }, id });
             this.logger.info(`${ username } has joined the server`);
         });
     })

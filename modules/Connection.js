@@ -35,8 +35,8 @@ module.exports = class Connection extends Module {
         this.server.tasks.create('handshake', id, id);
     }
 
-    send (message, origin) {
-        this.sockets.get(origin).send(JSON.stringify(message));
+    send (id, message) {
+        this.sockets.get(id).send(JSON.stringify(message));
     }
 
     broadcast (message, except) {

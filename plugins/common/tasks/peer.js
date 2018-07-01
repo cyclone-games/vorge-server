@@ -1,14 +1,13 @@
 module.exports = function peer (origin) {
     const std = this.libraries.use('std');
-    const { id } = std.components;
 
-    for (const [ , entity ] of this.initializer.heap.entities.entries()) if (id.of(entity) !== origin) {
+    for (const [ id, entity ] of this.initializer.heap.entities.entries()) if (id !== origin) {
         const peer = std.entities.player.assemble(entity);
 
-        this.tasks.create('initialize', { type: 'entity', spec: peer }, origin);
+        this.connection.send(origin, { task: { name: 'initialize', details: { type: 'entity', spec: peer } }, id });
 
         setTimeout(() => {
-            this.tasks.create('spawn', entity.valueOf(), origin);
+            this.connection.send(origin, { task: { name: 'spawn', details: entity.valueOf() }, id });
         }, 1000 / 60);
     }
 };
