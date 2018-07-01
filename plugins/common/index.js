@@ -9,6 +9,7 @@ const amend = require('./tasks/amend');
 const authenticate = require('./tasks/authenticate');
 const register = require('./tasks/register');
 const peer = require('./tasks/peer');
+const ping = require('./tasks/ping');
 const provision = require('./tasks/provision');
 
 module.exports = new Plugin('common', server => {
@@ -17,6 +18,7 @@ module.exports = new Plugin('common', server => {
 
     server.tasks.subscribe('register').forEach(method => register.apply(server, method.arguments));
     server.tasks.subscribe('authenticate').forEach(method => authenticate.apply(server, method.arguments));
+    server.tasks.subscribe('ping').forEach(method => ping.apply(server, method.arguments));
     server.tasks.subscribe('provision').forEach(method => provision.apply(server, method.arguments));
     server.tasks.subscribe('peer').forEach(method => peer.apply(server, method.arguments));
     server.tasks.subscribe('amend').forEach(method => amend.apply(server, method.arguments));
