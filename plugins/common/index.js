@@ -22,4 +22,10 @@ module.exports = new Plugin('common', server => {
     server.tasks.subscribe('provision').forEach(method => provision.apply(server, method.arguments));
     server.tasks.subscribe('peer').forEach(method => peer.apply(server, method.arguments));
     server.tasks.subscribe('amend').forEach(method => amend.apply(server, method.arguments));
+
+    server.connection.subscribe('close').forEach(method => {
+        const [ id ] = method.arguments;
+
+        server.connection.broadcast({ task: { name: 'despawn', details: id }, id });
+    });
 });
