@@ -1,6 +1,6 @@
 const Module = require('../core/Module');
 
-module.exports = class Logger extends Module {
+class Logger extends Module {
 
     constructor (name, server) {
         super(name, server);
@@ -11,22 +11,24 @@ module.exports = class Logger extends Module {
     }
 
     error (message) {
-        process.stderr.write(module.exports.pattern('error', message));
+        process.stderr.write(Logger.pattern('error', message));
     }
 
     warn (message) {
-        process.stdout.write(module.exports.pattern('warn', message));
+        process.stdout.write(Logger.pattern('warn', message));
     }
 
     info (message) {
-        process.stdout.write(module.exports.pattern('info', message));
+        process.stdout.write(Logger.pattern('info', message));
     }
 
     meta (message) {
-        process.stdout.write(module.exports.pattern('meta', message));
+        process.stdout.write(Logger.pattern('meta', message));
     }
 };
 
-module.exports.pattern = function pattern (type, message) {
+Logger.pattern = function pattern (type, message) {
     return `[ ${ Date.now() } ] [ ${ type.toLowerCase() } ] ${ message }\n`;
 };
+
+module.exports = Logger;
